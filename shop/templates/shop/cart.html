@@ -1,0 +1,73 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% load shop_tags %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="cart-page">
+    <div class="container">
+        <h1><img width='30px' src="{% static 'images/basket.svg' %}"> Корзина</h1>
+
+        {% if items %}
+        <div class="cart-layout">
+            <div class="cart-items">
+                {% for item in items %}
+                <div class="cart-item" id="cart-item-{{ item.pk }}">
+                    <div class="cart-item-image">
+                        {% if item.product.image %}
+                        <a href="{{ item.product.get_absolute_url }}">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">
+                            <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+                        </div>
+                        <div class="cart-item-price">{{ item.product.price|floatformat:0 }} ₽ за шт.</div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <div class="quantity-control">
+                            <button class="cart-qty-btn" data-item-id="{{ item.pk }}" data-action="decrease">−</button>
+                            <input type="number" class="cart-qty-input" value="{{ item.quantity }}" min="1" readonly>
+                            <button class="cart-qty-btn" data-item-id="{{ item.pk }}" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <div class="cart-item-total" id="item-total-{{ item.pk }}">
+                        {{ item.get_total|floatformat:0 }} ₽
+                    </div>
+                    <button class="cart-item-remove" data-item-id="{{ item.pk }}" title="Удалить">✕</button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="cart-summary">
+                <h2>Итого</h2>
+                <div class="cart-summary-row">
+                    <span>Товаров:</span>
+                    <span>{{ cart.get_items_count }} шт.</span>
+                </div>
+                <div class="cart-summary-row total">
+                    <span>Сумма:</span>
+                    <span id="cart-total">{{ cart.get_total|floatformat:0 }} ₽</span>
+                </div>
+                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block btn-lg" style="margin-top: 24px;">
+                    Оформить заказ
+                </a>
+                <a href="{% url 'catalog' %}" class="btn btn-outline btn-block" style="margin-top: 8px;">
+                    Продолжить покупки
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="cart-empty">
+            <div class="cart-empty-icon"><img width='50px' src="{% static 'images/basket.svg' %}"></div>
+            <h2>Корзина пуста</h2>
+            <p>Добавьте товары из каталога, чтобы оформить заказ</p>
+            <a href="{% url 'catalog' %}" class="btn btn-primary btn-lg">Перейти в каталог</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

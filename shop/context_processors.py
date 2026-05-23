@@ -1,0 +1,12 @@
+from .models import Cart
+
+
+def cart_count(request):
+    count = 0
+    if request.user.is_authenticated:
+        try:
+            cart = Cart.objects.get(user=request.user)
+            count = cart.get_items_count()
+        except Cart.DoesNotExist:
+            pass
+    return {'cart_items_count': count}

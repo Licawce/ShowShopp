@@ -1,0 +1,91 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Контакты</h1>
+        <p class="subtitle">Свяжитесь с нами любым удобным способом</p>
+    </div>
+
+    <div class="contacts-content">
+        <div class="contacts-grid">
+            <div class="contacts-info">
+                <div class="contact-card">
+                    <h2>Контактная информация</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <img src="{% static 'images/message.svg' %}" alt="Адрес">
+                        </div>
+                        <div class="contact-details">
+                            <h3>Адрес</h3>
+                            <p>Ульяновск, проезд Максимова, 2</p>
+                            <p class="contact-note">Офисное здание</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <img src="{% static 'images/sound.svg' %}" alt="Телефон">
+                        </div>
+                        <div class="contact-details">
+                            <h3>Телефон</h3>
+                            <p><a href="tel:88005553535" class="phone-link">+7 (927) 835-40-80</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <img src="{% static 'images/box.svg' %}" alt="Почта">
+                        </div>
+                        <div class="contact-details">
+                            <h3>Электронная почта</h3>
+                            <p><a href="mailto:info@ShowShop.ru" class="email-link">info@ShowShop.ru</a></p>
+                            <p class="contact-note">Общие вопросы</p>
+                            <p><a href="mailto:sales@ShowShop.ru" class="email-link">sales@ShowShop.ru</a></p>
+                            <p class="contact-note">Отдел продаж</p>
+                            <p><a href="mailto:support@ShowShop.ru" class="email-link">support@ShowShop.ru</a></p>
+                            <p class="contact-note">Техническая поддержка</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <img src="{% static 'images/Light.svg' %}" alt="Время работы">
+                        </div>
+                        <div class="contact-details">
+                            <h3>Время работы</h3>
+                            <p>Понедельник - Пятница: 9:00 - 19:00</p>
+                            <p>Суббота: 10:00 - 16:00</p>
+                            <p>Воскресенье: выходной</p>
+                        </div>
+                    </div>
+                </div>                
+                            
+            <div class="contacts-map">
+                <div class="map-container">
+                    <h2>Мы на карте</h2>
+                    <div class="map-placeholder">
+                        <div class="map-stub">
+                            <div class="map-stub-content">                               
+                                <div class="map-code-example">
+                                    <code><iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A8b76e8661dda8dd3872a257948dc8706e05ced96ac508d38f5e2b53a9bdbdb5a&amp;source=constructor" width="500" height="400" frameborder="0"></iframe></code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-address">
+                        <p><strong>Адрес для навигатора:</strong> Ульяновск, проезд Максимова, 2</p>
+                        <p><strong>Координаты:</strong> 54.346281, 48.566823</p>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,238 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% load shop_tags %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container">
+        
+        <div class="breadcrumb">
+            <a href="{% url 'index' %}">Главная</a>
+            <span>/</span>
+            <a href="{% url 'catalog' %}">Каталог</a>
+            <span>/</span>
+            <a href="{% url 'catalog' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+            <span>/</span>
+            <span class="current">{{ product.name }}</span>
+        </div>
+
+        
+        <div class="product-detail-grid">
+            
+            <div class="product-gallery">
+                <div class="product-main-image">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:5rem;opacity:0.2;">📦</div>
+                    {% endif %}
+                </div>
+                {% if product.image_2 or product.image_3 %}
+                <div class="product-thumbnails">
+                    {% if product.image %}
+                    <div class="product-thumbnail active">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
+                    {% if product.image_2 %}
+                    <div class="product-thumbnail">
+                        <img src="{{ product.image_2.url }}" alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
+                    {% if product.image_3 %}
+                    <div class="product-thumbnail">
+                        <img src="{{ product.image_3.url }}" alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+           
+            <div class="product-info">
+                <div class="product-type-badge">
+                    {% if product.category.slug == 'light' %}<img width='18px' src="{% static 'images/light.svg' %}">ㅤ
+                    {% elif product.category.slug == 'sound' %}<img width='20px' src="{% static 'images/sound.svg' %}">ㅤ
+                    {% else %}<img width='20px' src="{% static 'images/gear.png' %}">ㅤ{% endif %}
+                    {{ product.category.name }}
+                </div>
+
+                <h1>{{ product.name }}</h1>
+
+                {% if product.brand %}
+                <div class="product-brand">{{ product.brand }}</div>
+                {% endif %}
+
+                <div class="product-rating-row">
+                    <div class="stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= avg_rating %}
+                                <span class="star filled">★</span>
+                            {% else %}
+                                <span class="star">★</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">
+                        {{ avg_rating }} из 5 ({{ product.get_reviews_count }} отзывов)
+                    </span>
+                </div>
+
+                <div class="product-price-block">
+                    <span class="price-main">{{ product.price|floatformat:0 }} ₽</span>
+                    {% if product.old_price %}
+                    <span class="price-old-detail">{{ product.old_price|floatformat:0 }} ₽</span>
+                    <span class="price-discount">-{{ product.discount_percent }}%</span>
+                    {% endif %}
+                </div>
+
+                <div class="product-description">
+                    {{ product.description|linebreaksbr }}
+                </div>
+
+                {% if product.stock > 0 %}
+                <div class="product-stock" style="margin-bottom: 20px;">
+                    ● В наличии: {{ product.stock }} шт.
+                </div>
+
+                <div class="product-actions">
+                    <div class="quantity-control">
+                        <button class="qty-minus">−</button>
+                        <input type="number" class="qty-input" value="1" min="1" max="{{ product.stock }}">
+                        <button class="qty-plus">+</button>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <button class="btn btn-primary btn-lg btn-add-cart-detail" data-product-id="{{ product.pk }}">
+                        <img width='20px' src="{% static 'images/basket.svg' %}"> Добавить в корзину
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg">
+                        <img width='20px' src="{% static 'images/basket.svg' %}"> Войдите для покупки
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="product-stock out" style="margin-bottom: 20px; font-size: 1rem;">
+                    ● Нет в наличии
+                </div>
+                {% endif %}
+
+                <!-- Specifications -->
+                {% if product.get_specs_list %}
+                <div class="product-specs">
+                    <h3>Характеристики</h3>
+                    <div class="specs-list">
+                        {% for spec in product.get_specs_list %}
+                        <div class="spec-row">
+                            <span class="spec-key">{{ spec.key }}</span>
+                            <span class="spec-value">{{ spec.value }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related_products %}
+        <div style="margin-top: 60px;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px;">Похожие товары</h2>
+            <div class="products-grid">
+                {% for rp in related_products %}
+                <div class="product-card">
+                    <a href="{{ rp.get_absolute_url }}" class="product-card-image">
+                        {% if rp.image %}
+                        <img src="{{ rp.image.url }}" alt="{{ rp.name }}">
+                        {% else %}
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;opacity:0.2;"><img width='20px' src="{% static 'images/box.svg' %}"></div>
+                        {% endif %}
+                    </a>
+                    <div class="product-card-body">
+                        <div class="product-card-category">{{ rp.category.name }}</div>
+                        <h3 class="product-card-title">
+                            <a href="{{ rp.get_absolute_url }}">{{ rp.name }}</a>
+                        </h3>
+                        <div class="product-card-footer">
+                            <div class="product-price">
+                                <span class="price-current">{{ rp.price|floatformat:0 }} ₽</span>
+                            </div>
+                            {% if user.is_authenticated %}
+                            <button class="btn-add-cart" data-product-id="{{ rp.pk }}">В корзину</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2>Отзывы ({{ reviews|length }})</h2>
+
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-author">
+                            <div class="review-avatar">{{ review.user.username|first|upper }}</div>
+                            <div>
+                                <div class="review-name">{{ review.user.username }}</div>
+                                <div class="review-date">{{ review.created_at|date:"d.m.Y" }}</div>
+                            </div>
+                        </div>
+                        <div class="stars">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="review-text">{{ review.text }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state" style="padding: 40px;">
+                    <p>Пока нет отзывов. Будьте первым!</p>
+                </div>
+            {% endif %}
+
+            <!-- Review Form -->
+            {% if review_form %}
+            <div class="review-form-card">
+                <h3>Оставить отзыв</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>{{ review_form.rating.label }}</label>
+                        {{ review_form.rating }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ review_form.text.label }}</label>
+                        {{ review_form.text }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+                </form>
+            </div>
+            {% elif user.is_authenticated and user_review %}
+            <div class="review-form-card" style="text-align: center;">
+                <p style="color: var(--text-muted);">Вы уже оставили отзыв на этот товар.</p>
+            </div>
+            {% elif not user.is_authenticated %}
+            <div class="review-form-card" style="text-align: center;">
+                <p style="color: var(--text-muted);">
+                    <a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>, чтобы оставить отзыв.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

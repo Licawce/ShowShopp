@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+<section class="success-page">
+    <div class="success-card">
+        <div class="success-icon">✓</div>
+        <h1>Заказ оформлен!</h1>
+        <p>Спасибо за покупку в ShowShop</p>
+        <p class="order-number">Заказ #{{ order.pk }}</p>
+        <p style="color: var(--text-muted); margin-bottom: 32px;">
+            Мы свяжемся с вами по телефону {{ order.phone }} для подтверждения заказа.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'profile' %}" class="btn btn-primary">Мои заказы</a>
+            <a href="{% url 'catalog' %}" class="btn btn-outline">Продолжить покупки</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

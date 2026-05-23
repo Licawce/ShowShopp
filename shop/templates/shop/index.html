@@ -1,0 +1,201 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% load shop_tags %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">🎵 Профессиональное оборудование</div>
+            <h1>Световое и звуковое<br>оборудование <span class="highlight">нового поколения</span></h1>
+            <p>Создавайте незабываемые шоу с профессиональным оборудованием от ведущих мировых производителей. Доставка по всей России.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'catalog' %}" class="btn btn-primary btn-lg">Перейти в каталог</a>
+                <a href="#features" class="btn btn-outline btn-lg">Узнать больше</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% if popular_products %}
+<section class="slider-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Популярные товары</h2>
+            <p>Самое востребованное оборудование</p>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="slider-wrapper">
+            <div class="slider-track">
+                {% for product in popular_products %}
+                <div class="slider-slide">
+                    <div class="slider-slide-inner">
+                        <div class="slider-slide-content">
+                            <span class="badge">{{ product.category.name }}</span>
+                            <h3>{{ product.name }}</h3>
+                            <p>{{ product.short_description|default:product.description|truncatewords:25 }}</p>
+                            <div class="price">{{ product.price|floatformat:0 }} ₽</div>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                        </div>
+                        <div class="slider-slide-image">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                            <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;opacity:0.2;">📦</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if popular_products|length > 1 %}
+            <button class="slider-btn slider-btn-prev">‹</button>
+            <button class="slider-btn slider-btn-next">›</button>
+            {% endif %}
+        </div>
+
+        {% if popular_products|length > 1 %}
+        <div class="slider-dots"></div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+
+{% if categories %}
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Категории оборудования</h2>
+            <p>Выберите нужный тип оборудования</p>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="categories-grid">
+            {% for category in categories %}
+            <a href="{% url 'catalog' %}?category={{ category.slug }}" class="category-card">
+                <div class="category-icon">
+                    {% if category.slug == 'light' %}<img width='18px' src="{% static 'images/light.svg' %}">
+                    {% elif category.slug == 'sound' %}<img width='20px' src="{% static 'images/sound.svg' %}">
+                    {% else %}<img width='20px' src="{% static 'images/gear.png' %}">{% endif %}
+                </div>
+                <h3>{{ category.name }}</h3>
+                <p>{{ category.products.count }} товаров</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+{% if new_products %}
+<section class="section" style="background: var(--bg-surface);">
+    <div class="container">
+        <div class="section-header">
+            <h2>Новинки</h2>
+            <p>Недавно добавленные товары</p>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="products-grid">
+            {% for product in new_products %}
+            <div class="product-card">
+                <a href="{{ product.get_absolute_url }}" class="product-card-image">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;opacity:0.2;">📦</div>
+                    {% endif %}
+                    <div class="product-card-badges">
+                        {% if product.is_new %}<span class="badge badge-new">Новинка</span>{% endif %}
+                        {% if product.discount_percent > 0 %}<span class="badge badge-sale">-{{ product.discount_percent }}%</span>{% endif %}
+                        {% if product.is_popular %}<span class="badge badge-popular">Хит</span>{% endif %}
+                    </div>
+                </a>
+                <div class="product-card-body">
+                    <div class="product-card-category">{{ product.category.name }}</div>
+                    <h3 class="product-card-title">
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </h3>
+                    <p class="product-card-desc">{{ product.short_description|default:product.description|truncatewords:15 }}</p>
+
+                    <div class="product-card-rating">
+                        <div class="stars">
+                            {% with avg=product.get_avg_rating %}
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= avg %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star">★</span>
+                                {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <span class="rating-count">({{ product.get_reviews_count }})</span>
+                    </div>
+
+                    <div class="product-card-footer">
+                        <div class="product-price">
+                            <span class="price-current">{{ product.price|floatformat:0 }} ₽</span>
+                            {% if product.old_price %}
+                            <span class="price-old">{{ product.old_price|floatformat:0 }} ₽</span>
+                            {% endif %}
+                        </div>
+                        {% if user.is_authenticated %}
+                        <button class="btn-add-cart" data-product-id="{{ product.pk }}">В корзину</button>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="btn-add-cart">В корзину</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{% url 'catalog' %}" class="btn btn-outline">Смотреть все товары →</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Features Section -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Почему ShowShop?</h2>
+            <p>Мы предлагаем лучший сервис для профессионалов</p>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><img width='40px' src="{% static 'images/truck.svg' %}"></div>
+                <h3>Быстрая доставка</h3>
+                <p>Доставка по всей России. Отправка в день заказа при наличии на складе.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><img width='40px' src="{% static 'images/True.svg' %}"></div>
+                <h3>Гарантия качества</h3>
+                <p>Только оригинальное оборудование от официальных дистрибьюторов с гарантией.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><img width='40px' src="{% static 'images/message.svg' %}"></div>
+                <h3>Консультации</h3>
+                <p>Наши специалисты помогут подобрать оборудование под ваши задачи.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><img width='40px' src="{% static 'images/wallet.svg' %}"></div>
+                <h3>Лучшие цены</h3>
+                <p>Конкурентные цены и специальные предложения для постоянных клиентов.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

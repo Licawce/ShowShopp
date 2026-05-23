@@ -1,0 +1,117 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+    <div class="container">
+       
+        <div class="profile-header">
+            <div class="profile-avatar">{{ user.username|first|upper }}</div>
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p>{{ user.email }}</p>
+                <p>Дата регистрации: {{ user.date_joined|date:"d.m.Y" }}</p>
+            </div>
+        </div>
+
+        
+        <div class="profile-tabs">
+            <button class="profile-tab active" data-tab="orders"><img width='20px' src="{% static 'images/box.svg' %}"> Заказы</button>
+            <button class="profile-tab" data-tab="cart-section"><img width='20px' src="{% static 'images/basket.svg' %}"> Корзина</button>
+            <button class="profile-tab" data-tab="settings"><img width='20px' src="{% static 'images/gear.png' %}"> Настройки</button>
+        </div>
+
+        
+        <div class="profile-section active" id="orders">
+            <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">История заказов</h2>
+
+            {% if orders %}
+                {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Заказ #{{ order.pk }}</span>
+                        <span class="order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+                    </div>
+                    <div class="order-items">
+                        {% for item in order.items.all %}
+                        <div class="order-item-row">
+                            <span>{{ item.product_name }} × {{ item.quantity }}</span>
+                            <span>{{ item.get_total|floatformat:0 }} ₽</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="order-footer">
+                        <span class="order-date">{{ order.created_at|date:"d.m.Y H:i" }}</span>
+                        <span class="order-total">{{ order.total_price|floatformat:0 }} ₽</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon"><img width='80px' src="{% static 'images/box.svg' %}"></div>
+                    <h3>Заказов пока нет</h3>
+                    <p>Ваши заказы будут отображаться здесь</p>
+                    <a href="{% url 'catalog' %}" class="btn btn-outline" style="margin-top: 16px;">Перейти в каталог</a>
+                </div>
+            {% endif %}
+        </div>
+
+        
+        <div class="profile-section" id="cart-section">
+            <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">Корзина</h2>
+
+            {% if cart.items.all %}
+                {% for item in cart.items.all %}
+                <div class="order-card">
+                    <div class="order-item-row" style="font-size: 1rem;">
+                        <span>
+                            <a href="{{ item.product.get_absolute_url }}" style="color: var(--text-primary); font-weight: 600;">
+                                {{ item.product.name }}
+                            </a>
+                            × {{ item.quantity }}
+                        </span>
+                        <span style="font-weight: 700;">{{ item.get_total|floatformat:0 }} ₽</span>
+                    </div>
+                </div>
+                {% endfor %}
+                <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <a href="{% url 'cart' %}" class="btn btn-outline">Открыть корзину</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-primary">Оформить заказ</a>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon"><img class='icon' src="{% static 'images/basket.svg' %}"></div>
+                    <h3>Корзина пуста</h3>
+                    <a href="{% url 'catalog' %}" class="btn btn-outline" style="margin-top: 16px;">Перейти в каталог</a>
+                </div>
+            {% endif %}
+        </div>
+
+        
+        <div class="profile-section" id="settings">
+            <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">Настройки профиля</h2>
+
+            <div class="auth-card" style="max-width: 100%;">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Имя</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        <label>Фамилия</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        {{ form.email }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

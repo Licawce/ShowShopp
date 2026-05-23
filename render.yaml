@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: showsystem
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn showsystem.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: showsystem-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: DEBUG
+        value: false
+
+databases:
+  - name: showsystem-db
+    databaseName: showsystem
+    user: showsystem
