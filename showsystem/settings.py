@@ -61,13 +61,22 @@ WSGI_APPLICATION = 'showsystem.wsgi.application'
 
 # Для локальной разработки используем SQLite
 # Для production на render.com будет использоваться DATABASE_URL из переменных окружения
-DATABASES = {
-    :'default' dj_database_url.config(
- default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',  # резервный вариант для локальной разработки
- conn_max_age=600,
- conn_health_checks=True,  # рекомендуется для продакшена на Render
-    )
-}
+if os.environ.get('RENDER', ''):
+    # На render.com используем dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
+    }
+else:
+    # Локально используем SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
