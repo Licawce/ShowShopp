@@ -6,8 +6,8 @@ set -o errexit
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --no-input
-
 # Apply database migrations
 python manage.py migrate
+
+# Collect static files (важно делать это ПОСЛЕ установки зависимостей)
+python manage.py collectstatic --no-input
