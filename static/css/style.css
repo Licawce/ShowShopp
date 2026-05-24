@@ -2593,13 +2593,18 @@ img {
     padding: 2rem;
     border: 1px solid var(--border-color);
     margin-bottom: 2rem;
-    width: 700px;
-    
+    width: 100%;
+    max-width: 700px;
 }
 
 .contacts-info {
-    display: inline-flex;
-    gap: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.contacts-map {
+    width: 100%;
 }
 
 .contact-card h2 {
@@ -2727,28 +2732,87 @@ img {
     margin-bottom: 1.5rem;
     color: var(--text-primary);
 }
+.map-placeholder {
+    margin-bottom: 1.5rem;
+}
+
+.map-stub {
+    background: var(--bg-surface);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    height: 0;
+    padding-bottom: 100%; /* Создает квадрат с соотношением 1:1 */
+    position: relative;
+    overflow: hidden;
+}
+
+.map-stub-content {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-stub-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.map-stub-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
 .map-code-example {
-    background: var(--bg-primary);
-    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 1.5rem;
     margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .map-code-example code {
-    font-family: monospace;
-    font-size: 0.9rem;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.85rem;
     color: var(--text-secondary);
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: block;
+}
+
+.map-code-example code iframe {
+    max-width: 100%;
+    height: 360px;
 }
 
 .map-address {
     background: var(--bg-surface);
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1.5rem;
     font-size: 0.9rem;
+    border: 1px solid var(--border-color);
 }
 
 .map-address p {
     margin: 0.5rem 0;
     color: var(--text-secondary);
+}
+
+.map-address strong {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .contact-form-section {
@@ -2819,6 +2883,145 @@ img {
 }
 
 /* ===== RESPONSIVE FOR ABOUT & CONTACTS ===== */
+
+/* Очень маленькие мобильные устройства (до 360px) */
+@media (max-width: 360px) {
+    .page-header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .page-header .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .contact-card {
+        padding: 1.25rem;
+    }
+    
+    .contact-card h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .contact-details h3 {
+        font-size: 1rem;
+    }
+    
+    .contact-details p {
+        font-size: 0.85rem;
+    }
+    
+    .contact-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .contact-icon img {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .map-container {
+        padding: 1.25rem;
+    }
+    
+    .map-container h2 {
+        font-size: 1.3rem;
+    }
+    
+    .map-stub {
+        padding-bottom: 100%; /* Остается квадратным */
+    }
+    
+    .map-stub-content {
+        padding: 0.75rem;
+    }
+    
+    .map-stub-content h3 {
+        font-size: 1rem;
+    }
+    
+    .map-stub-content p {
+        font-size: 0.85rem;
+    }
+    
+    .map-code-example {
+        padding: 0.75rem;
+    }
+    
+    .map-code-example code {
+        font-size: 0.7rem;
+    }
+    
+    .map-address {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .phone-link, .email-link {
+        font-size: 0.85rem;
+    }
+}
+
+/* Мобильные устройства (до 480px) */
+@media (max-width: 480px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+    
+    .page-header .subtitle {
+        font-size: 1rem;
+    }
+    
+    .contact-card {
+        padding: 1.5rem;
+    }
+    
+    .contact-card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .contact-details h3 {
+        font-size: 1.1rem;
+    }
+    
+    .contact-details p {
+        font-size: 0.9rem;
+    }
+    
+    .map-container {
+        padding: 1.5rem;
+    }
+    
+    .map-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .map-stub {
+        padding-bottom: 100%; /* Остается квадратным */
+    }
+    
+    .map-stub-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .map-stub-content p {
+        font-size: 0.9rem;
+    }
+    
+    .map-code-example code {
+        font-size: 0.75rem;
+    }
+    
+    .map-address {
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Планшеты и мобильные (до 768px) */
 @media (max-width: 768px) {
     .page-header h1 {
         font-size: 2rem;
@@ -2855,12 +3058,17 @@ img {
         height: 40px;
     }
     
+    .contact-icon img {
+        width: 20px;
+        height: 20px;
+    }
+    
     .contact-actions .btn {
         min-width: 100%;
     }
     
     .map-stub {
-        height: 300px;
+        padding-bottom: 100%; /* Остается квадратным */
     }
     
     .map-stub-content {
@@ -2870,11 +3078,88 @@ img {
     .map-stub-content h3 {
         font-size: 1.2rem;
     }
+    
+    .map-code-example {
+        padding: 1rem;
+    }
+    
+    .map-code-example code {
+        font-size: 0.8rem;
+    }
 }
 
+/* Планшеты (до 1024px) */
 @media (max-width: 1024px) {
     .contacts-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    
+    .contact-card {
+        max-width: 100%;
+    }
+    
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+/* Десктопы среднего размера (до 1200px) */
+@media (max-width: 1200px) {
+    .contacts-content {
+        max-width: 100%;
+        padding: 0 2rem;
+    }
+    
+    .contacts-grid {
+        gap: 2.5rem;
+    }
+}
+
+/* Общие улучшения для всех размеров */
+@media (max-width: 768px) {
+    .contact-item {
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .phone-link, .email-link {
+        font-size: 0.95rem;
+        word-break: break-all;
+    }
+}
+
+/* Улучшение отступов для контейнера на мобильных */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .contacts-content {
+        padding: 0;
+    }
+}
+
+/* Улучшение для горизонтальной ориентации на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    .contacts-grid {
+        gap: 1.5rem;
+    }
+    
+    .contact-item {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .map-stub {
+        padding-bottom: 100%; /* Остается квадратным */
+    }
+}
+
+/* Улучшение для очень высоких экранов */
+@media (min-height: 800px) and (max-width: 768px) {
+    .contacts-content {
+        padding-top: 1rem;
+        padding-bottom: 2rem;
     }
 }
