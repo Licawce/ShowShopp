@@ -87,9 +87,16 @@ class ReviewForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
+    payment_method = forms.ChoiceField(
+        choices=Order.PAYMENT_METHOD_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'payment-method-radio'}),
+        label='Способ оплаты',
+        initial='cash'
+    )
+    
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'comment']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'payment_method', 'comment']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Имя'}),
             'last_name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Фамилия'}),
