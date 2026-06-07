@@ -7,6 +7,7 @@
     box-sizing: border-box;
 }
 
+/* CSS переменные для темной темы (по умолчанию) */
 :root {
     --primary: #7c3aed;
     --primary-light: #a78bfa;
@@ -51,6 +52,43 @@ body {
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Темная тема по умолчанию */
+body.dark-theme {
+    --bg-dark: #0a0a0f;
+    --bg-card: #13131a;
+    --bg-card-hover: #1a1a25;
+    --bg-surface: #16161f;
+    --text-primary: #f1f1f4;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border-color: #2a2a3a;
+    --border-light: #3a3a4a;
+    --gradient-dark: linear-gradient(180deg, #0a0a0f 0%, #13131a 100%);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+/* Светлая тема */
+body.light-theme {
+    --bg-dark: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --bg-surface: #f1f5f9;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-light: #cbd5e1;
+    --gradient-dark: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.1);
 }
 
 a {
@@ -94,6 +132,22 @@ img {
     align-items: center;
     justify-content: space-between;
     height: 72px;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
 }
 
 .logo {
@@ -1995,6 +2049,12 @@ img {
         display: block;
     }
 
+    .theme-toggle {
+        order: 2;
+        margin-left: auto;
+        margin-right: 1rem;
+    }
+
     .hero h1 {
         font-size: 2.2rem;
     }
@@ -3161,5 +3221,656 @@ img {
     .contacts-content {
         padding-top: 1rem;
         padding-bottom: 2rem;
+    }
+}
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.theme-toggle-btn {
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-primary);
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(124, 58, 237, 0.25);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.theme-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-icon-dark {
+    opacity: 1;
+}
+
+.theme-icon-light {
+    opacity: 0;
+    position: absolute;
+}
+
+/* Стили для светлой темы */
+body.light-theme {
+    --bg-dark: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --bg-surface: #f1f5f9;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-light: #cbd5e1;
+    --primary: #7c3aed;
+    --primary-light: #8b5cf6;
+    --primary-dark: #6d28d9;
+    --primary-glow: rgba(124, 58, 237, 0.15);
+    --secondary-light: #ddd6fe;
+    --gradient-dark: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.1);
+}
+
+body.light-theme .header {
+    background: rgba(248, 250, 252, 0.95);
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.light-theme .theme-toggle-btn {
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    color: var(--text-primary);
+}
+
+body.light-theme .theme-toggle-btn:hover {
+    background: rgba(124, 58, 237, 0.2);
+}
+
+body.light-theme .theme-icon-dark {
+    opacity: 0;
+}
+
+body.light-theme .theme-icon-light {
+    opacity: 1;
+}
+
+/* Стили для темной темы (по умолчанию) */
+body.dark-theme .theme-icon-dark {
+    opacity: 1;
+}
+
+body.dark-theme .theme-icon-light {
+    opacity: 0;
+}
+/* Дополнительные стили для светлой темы */
+body.light-theme .nav a {
+    color: var(--text-primary);
+}
+
+body.light-theme .nav a:hover {
+    color: var(--primary);
+    background: rgba(124, 58, 237, 0.08);
+}
+
+body.light-theme .nav a.active {
+    color: var(--primary);
+    background: rgba(124, 58, 237, 0.12);
+}
+
+body.light-theme .logo {
+    color: var(--text-primary);
+}
+
+body.light-theme .logo span {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.light-theme .contact-card,
+body.light-theme .map-container,
+body.light-theme .faq-section,
+body.light-theme .contact-form-section {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .contact-item {
+    border-bottom-color: var(--border-light);
+}
+
+body.light-theme .contact-card h2,
+body.light-theme .map-container h2,
+body.light-theme .faq-section h2,
+body.light-theme .contact-form-section h2 {
+    color: var(--text-primary);
+    border-bottom-color: var(--primary);
+}
+
+body.light-theme .contact-details h3 {
+    color: var(--text-primary);
+}
+
+body.light-theme .contact-details p {
+    color: var(--text-secondary);
+}
+
+body.light-theme .contact-note {
+    color: var(--text-muted) !important;
+}
+
+body.light-theme .phone-link,
+body.light-theme .email-link {
+    color: var(--primary);
+}
+
+body.light-theme .faq-item {
+    border-bottom-color: var(--border-light);
+}
+
+body.light-theme .faq-item h3 {
+    color: var(--text-primary);
+}
+
+body.light-theme .faq-item p {
+    color: var(--text-secondary);
+}
+
+body.light-theme .map-stub {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+}
+
+body.light-theme .map-stub-content h3 {
+    color: var(--text-primary);
+}
+
+body.light-theme .map-stub-content p {
+    color: var(--text-secondary);
+}
+
+body.light-theme .map-code-example {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .map-code-example code {
+    color: var(--text-secondary);
+}
+
+body.light-theme .map-address {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+}
+
+body.light-theme .map-address p {
+    color: var(--text-secondary);
+}
+
+body.light-theme .map-address strong {
+    color: var(--text-primary);
+}
+
+body.light-theme .footer {
+    background: var(--bg-card);
+    border-top-color: var(--border-color);
+}
+
+body.light-theme .footer-logo span {
+    color: var(--text-primary);
+}
+
+body.light-theme .footer-links h4,
+body.light-theme .footer-contacts h4 {
+    color: var(--text-primary);
+}
+
+body.light-theme .footer-contacts a,
+body.light-theme .footer-links a {
+    color: var(--text-secondary);
+}
+
+body.light-theme .footer-contacts a:hover,
+body.light-theme .footer-links a:hover {
+    color: var(--primary);
+}
+
+/* Стили для карточек товаров в светлой теме */
+body.light-theme .product-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .product-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+
+body.light-theme .product-card-title a {
+    color: var(--text-primary);
+}
+
+body.light-theme .product-card-title a:hover {
+    color: var(--primary);
+}
+
+body.light-theme .product-card-desc {
+    color: var(--text-muted);
+}
+
+body.light-theme .product-card-footer {
+    border-top-color: var(--border-color);
+}
+
+/* Стили для фильтров и каталога в светлой теме */
+body.light-theme .filter-section {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .filter-section h3 {
+    border-bottom-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.light-theme .filter-list a {
+    color: var(--text-secondary);
+}
+
+body.light-theme .filter-list a:hover,
+body.light-theme .filter-list a.active {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--primary);
+}
+
+/* Стили для форм в светлой теме */
+body.light-theme .form-input,
+body.light-theme .form-select,
+body.light-theme .form-textarea,
+body.light-theme .contact-form input,
+body.light-theme .contact-form select,
+body.light-theme .contact-form textarea {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.light-theme .form-input:focus,
+body.light-theme .form-select:focus,
+body.light-theme .form-textarea:focus,
+body.light-theme .contact-form input:focus,
+body.light-theme .contact-form select:focus,
+body.light-theme .contact-form textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* Стили для корзины в светлой теме */
+body.light-theme .cart-item {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .cart-item:hover {
+    border-color: var(--border-light);
+}
+
+body.light-theme .cart-item-name a {
+    color: var(--text-primary);
+}
+
+body.light-theme .cart-summary {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .cart-summary h2 {
+    border-bottom-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.light-theme .cart-summary-row.total {
+    border-top-color: var(--border-color);
+}
+
+/* Стили для профиля в светлой теме */
+body.light-theme .profile-header {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .profile-tabs {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .order-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .order-header {
+    border-bottom-color: var(--border-color);
+}
+
+/* Стили для отзывов в светлой теме */
+body.light-theme .review-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .review-form-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* Стили для сообщений в светлой теме */
+body.light-theme .message {
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    color: var(--text-primary);
+}
+
+/* Стили для страниц аутентификации в светлой теме */
+body.light-theme .auth-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.light-theme .auth-card h1 {
+    color: var(--text-primary);
+}
+
+body.light-theme .auth-card .auth-subtitle {
+    color: var(--text-muted);
+}
+
+body.light-theme .auth-footer {
+    color: var(--text-muted);
+}
+
+body.light-theme .auth-footer a {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+body.light-theme .auth-footer a:hover {
+    color: var(--primary);
+}
+
+body.light-theme .form-group label {
+    color: var(--text-secondary);
+}
+
+/* Стили для ошибок форм в светлой теме */
+body.light-theme .form-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--danger);
+}
+
+body.light-theme .form-errors ul {
+    color: var(--danger);
+}
+
+body.light-theme .form-error {
+    color: var(--danger);
+}
+
+/* Адаптивность для кнопки темы */
+@media (max-width: 768px) {
+    .theme-toggle {
+        margin-right: 0.5rem;
+    }
+    
+    .theme-toggle-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+/* ===== PAYMENT METHODS ===== */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.payment-method-option {
+    position: relative;
+}
+
+.payment-method-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.payment-method-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.payment-method-radio:checked + .payment-method-label {
+    border-color: var(--primary);
+    background: rgba(124, 58, 237, 0.08);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.payment-method-label:hover {
+    border-color: var(--primary-light);
+    background: rgba(124, 58, 237, 0.05);
+}
+
+.payment-method-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.payment-method-radio:checked + .payment-method-label .payment-method-icon {
+    background: var(--primary);
+    color: white;
+}
+
+.payment-method-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.payment-method-info strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.payment-method-info small {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Стили для светлой темы */
+body.light-theme .payment-method-label {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+}
+
+body.light-theme .payment-method-radio:checked + .payment-method-label {
+    border-color: var(--primary);
+    background: rgba(124, 58, 237, 0.08);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+body.light-theme .payment-method-label:hover {
+    border-color: var(--primary-light);
+    background: rgba(124, 58, 237, 0.05);
+}
+
+body.light-theme .payment-method-icon {
+    background: var(--bg-card);
+}
+
+/* Адаптивность для способов оплаты */
+@media (max-width: 768px) {
+    .payment-method-label {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .payment-method-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .payment-method-info strong {
+        font-size: 0.95rem;
+    }
+    
+    .payment-method-info small {
+        font-size: 0.8rem;
+    }
+}
+/* Дополнительные стили для страниц аутентификации */
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.auth-form .form-input,
+.auth-form .form-textarea,
+.auth-form .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.auth-form .form-input:focus,
+.auth-form .form-textarea:focus,
+.auth-form .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.auth-form .form-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-form .form-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.auth-form .form-error {
+    color: var(--danger);
+    font-size: 0.8rem;
+    margin-top: 6px;
+}
+
+/* Стили для светлой темы */
+body.light-theme .auth-form .form-input,
+body.light-theme .auth-form .form-textarea,
+body.light-theme .auth-form .form-select {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.light-theme .auth-form .form-input:focus,
+body.light-theme .auth-form .form-textarea:focus,
+body.light-theme .auth-form .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+body.light-theme .auth-form label {
+    color: var(--text-secondary);
+}
+
+/* Медиа-запросы для страниц аутентификации */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 32px 24px;
+        margin: 0 16px;
+    }
+    
+    .auth-card h1 {
+        font-size: 1.6rem;
+    }
+    
+    .auth-card .auth-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .auth-form .form-input,
+    .auth-form .form-textarea,
+    .auth-form .form-select {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 24px 20px;
+        border-radius: var(--radius-md);
+    }
+    
+    .auth-card h1 {
+        font-size: 1.4rem;
+    }
+    
+    .auth-page {
+        padding: 40px 0;
+        min-height: calc(100vh - 72px - 150px);
     }
 }
