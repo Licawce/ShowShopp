@@ -154,9 +154,15 @@ class Order(models.Model):
         ('delivered', 'Доставлен'),
         ('cancelled', 'Отменён'),
     ]
+    
+    PAYMENT_METHOD_CHOICES = [
+        ('cash', 'Наличными при получении'),
+        ('card', 'Картой при получении'),
+    ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='orders')
     status = models.CharField('Статус', max_length=20, choices=STATUS_CHOICES, default='pending')
+    payment_method = models.CharField('Способ оплаты', max_length=20, choices=PAYMENT_METHOD_CHOICES, default='cash')
     total_price = models.DecimalField('Итого', max_digits=10, decimal_places=2)
     first_name = models.CharField('Имя', max_length=100)
     last_name = models.CharField('Фамилия', max_length=100, blank=True)
