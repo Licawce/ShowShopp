@@ -38,6 +38,30 @@
                         {{ form.address }}
                     </div>
                     <div class="form-group">
+                        <label>Способ оплаты *</label>
+                        <div class="payment-methods">
+                            {% for value, label in form.payment_method.field.choices %}
+                            <div class="payment-method-option">
+                                <input type="radio" id="payment_{{ value }}" name="payment_method" value="{{ value }}" 
+                                       class="payment-method-radio" {% if forloop.first %}checked{% endif %}>
+                                <label for="payment_{{ value }}" class="payment-method-label">
+                                    <div class="payment-method-icon">
+                                        {% if value == 'cash' %}
+                                            💵
+                                        {% else %}
+                                            💳
+                                        {% endif %}
+                                    </div>
+                                    <div class="payment-method-info">
+                                        <strong>{{ label }}</strong>
+                                        <small>Оплата при получении товара</small>
+                                    </div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>Комментарий</label>
                         {{ form.comment }}
                     </div>
