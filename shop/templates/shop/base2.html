@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="dark-theme">
     <!-- Header -->
     <header class="header">
         <div class="header-inner">
@@ -19,6 +19,25 @@
                 <div class="logo-icon"><img src="{% static 'images/logo.svg' %}"></div>
                 <span>ShowShop</span>
             </a>
+
+            <div class="theme-toggle">
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Переключить тему">
+                    <svg class="theme-icon theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 21V23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M4.22 4.22L5.64 5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M18.36 18.36L19.78 19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M1 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M21 12H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M4.22 19.78L5.64 18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="theme-icon theme-icon-dark" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 12.79C20.8427 14.492 20.2039 16.1144 19.1582 17.4668C18.1125 18.8192 16.7035 19.8458 15.0957 20.4265C13.4879 21.0073 11.748 21.1181 10.0795 20.7461C8.41104 20.3741 6.88299 19.5345 5.67424 18.3258C4.4655 17.117 3.62594 15.589 3.2539 13.9205C2.88186 12.252 2.99274 10.5121 3.57348 8.9043C4.15423 7.29651 5.18085 5.8875 6.53323 4.84185C7.88562 3.7962 9.50797 3.15731 11.21 3C10.2134 4.34827 9.73375 6.00945 9.8585 7.68141C9.98325 9.35338 10.7039 10.9251 11.8894 12.1106C13.0749 13.2961 14.6466 14.0167 16.3186 14.1415C17.9906 14.2662 19.6517 13.7866 21 12.79Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
 
             <button class="mobile-menu-btn">☰</button>
 
@@ -62,9 +81,75 @@
     </main>
 
     <!-- Footer -->
-    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo"><img src="{% static 'images/logo.svg' %}"><span>ShowShop</span></div>
+                    <p>Профессиональное световое и звуковое оборудование</p>
+                    <p>для мероприятий, концертов и инсталляций.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Навигация</h4>
+                    <a href="{% url 'index' %}">Главная</a>
+                    <a href="{% url 'catalog' %}">Каталог</a>
+                    <a href="{% url 'about' %}">О нас</a>
+                    <a href="{% url 'contacts' %}">Контакты</a>
+                </div>
+                <div class="footer-contacts">
+                    <h4>Контакты</h4>
+                    <a href="tel:88005553535" class="phone">+7 (927) 835-40-80</a>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">Звонок бесплатный по России</p>
+                    <a href="mailto:ShowShop@mail.ru">ShowShop@mail.ru</a>
+                    
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ShowShop. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
+    
+    <script>
+        // Функция переключения темы
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark-theme');
+            
+            if (isDark) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Загрузка сохраненной темы
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const body = document.body;
+            
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+                body.classList.remove('dark-theme');
+            } else {
+                body.classList.add('dark-theme');
+                body.classList.remove('light-theme');
+            }
+            
+            // Обработчик для кнопки переключения темы
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', toggleTheme);
+            }
+        });
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>
