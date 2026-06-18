@@ -37,6 +37,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'showsystem.simple_debug.SimpleDebugMiddleware',
+    'showsystem.middleware.AdminAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'showsystem.urls'
