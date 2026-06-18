@@ -30,8 +30,13 @@
                     <div class="cart-item-quantity">
                         <div class="quantity-control">
                             <button class="cart-qty-btn" data-item-id="{{ item.pk }}" data-action="decrease">−</button>
-                            <input type="number" class="cart-qty-input" value="{{ item.quantity }}" min="1" readonly>
+                            <input type="number" class="cart-qty-input" value="{{ item.quantity }}"
+                                   min="1" max="{{ item.product.stock }}"
+                                   data-max="{{ item.product.stock }}" readonly>
                             <button class="cart-qty-btn" data-item-id="{{ item.pk }}" data-action="increase">+</button>
+                        </div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">
+                            В наличии: {{ item.product.stock }} шт.
                         </div>
                     </div>
                     <div class="cart-item-total" id="item-total-{{ item.pk }}">
