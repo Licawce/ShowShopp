@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -17,4 +17,7 @@ urlpatterns = [
     path('order/success/<int:order_id>/', views.order_success, name='order_success'),
     path('about/', views.about_view, name='about'),
     path('contacts/', views.contacts_view, name='contacts'),
+
+    
+    re_path(r'^.*$', views.page_not_found, name='page_not_found'),
 ]
