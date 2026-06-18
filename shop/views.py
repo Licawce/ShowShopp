@@ -11,6 +11,14 @@ from .models import Product, Category, Cart, CartItem, Order, OrderItem, Review
 from .forms import RegistrationForm, LoginForm, ReviewForm, OrderForm, ProfileForm
 
 
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def page_not_found(request):
+    return render(request, '404.html', status=404)
+
+
 def index(request):
     popular_products = Product.objects.filter(is_popular=True, is_available=True)[:5]
     new_products = Product.objects.filter(is_new=True, is_available=True)[:8]
@@ -220,6 +228,39 @@ def add_to_cart(request):
     product = get_object_or_404(Product, pk=product_id, is_available=True)
     cart, created = Cart.objects.get_or_create(user=request.user)
 
+    
+    available_quantity = product.stock
+    
+    
+    existing_quantity = 0
+    try:
+        existing_cart_item = CartItem.objects.get(cart=cart, product=product)
+        existing_quantity = existing_cart_item.quantity
+    except CartItem.DoesNotExist:
+        pass
+    
+    
+    total_quantity = existing_quantity + quantity
+    
+    
+    if total_quantity > available_quantity:
+        return JsonResponse({
+            'success': False,
+            'message': f'Недостаточно товара в наличии. Доступно: {available_quantity} шт., '
+                      f'в корзине уже: {existing_quantity} шт.',
+            'error_type': 'insufficient_stock',
+            'available_quantity': available_quantity,
+            'current_in_cart': existing_quantity,
+        }, status=400)
+    
+    
+    if quantity <= 0:
+        return JsonResponse({
+            'success': False,
+            'message': 'Количество должно быть больше 0',
+            'error_type': 'invalid_quantity',
+        }, status=400)
+
     cart_item, item_created = CartItem.objects.get_or_create(
         cart=cart, product=product,
         defaults={'quantity': quantity}
@@ -234,6 +275,7 @@ def add_to_cart(request):
         'message': f'{product.name} добавлен в корзину',
         'cart_count': cart.get_items_count(),
         'cart_total': float(cart.get_total()),
+        'available_quantity': available_quantity - total_quantity,  # Оставшееся количество
     })
 
 
@@ -249,6 +291,20 @@ def update_cart(request):
         quantity = int(request.POST.get('quantity', 1))
 
     cart_item = get_object_or_404(CartItem, pk=item_id, cart__user=request.user)
+    product = cart_item.product
+
+    
+    available_quantity = product.stock
+    
+    
+    if quantity > available_quantity:
+        return JsonResponse({
+            'success': False,
+            'message': f'Недостаточно товара в наличии. Доступно: {available_quantity} шт.',
+            'error_type': 'insufficient_stock',
+            'available_quantity': available_quantity,
+            'max_quantity': available_quantity,
+        }, status=400)
 
     if quantity <= 0:
         cart_item.delete()
@@ -262,6 +318,7 @@ def update_cart(request):
         'cart_count': cart.get_items_count(),
         'cart_total': float(cart.get_total()),
         'item_total': float(cart_item.get_total()) if quantity > 0 else 0,
+        'available_quantity': available_quantity,
     })
 
 
